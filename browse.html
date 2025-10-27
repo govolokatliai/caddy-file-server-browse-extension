@@ -721,6 +721,203 @@ video::cue {
 	}
 }
 
+/* README card styles */
+#readme-content {
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+}
+
+#readme-content h1,
+#readme-content h2,
+#readme-content h3,
+#readme-content h4,
+#readme-content h5,
+#readme-content h6 {
+	margin-top: 1.5em;
+	margin-bottom: 0.5em;
+	font-weight: 600;
+	line-height: 1.25;
+}
+
+#readme-content h1 {
+	font-size: 2em;
+	border-bottom: 1px solid #e5e9ea;
+	padding-bottom: 0.3em;
+}
+
+#readme-content h2 {
+	font-size: 1.5em;
+	border-bottom: 1px solid #e5e9ea;
+	padding-bottom: 0.3em;
+}
+
+#readme-content h3 {
+	font-size: 1.25em;
+}
+
+#readme-content h4 {
+	font-size: 1em;
+}
+
+#readme-content h5 {
+	font-size: 0.875em;
+}
+
+#readme-content h6 {
+	font-size: 0.85em;
+	color: #6a737d;
+}
+
+#readme-content p {
+	margin-top: 0;
+	margin-bottom: 1em;
+}
+
+#readme-content ul,
+#readme-content ol {
+	padding-left: 2em;
+	margin-top: 0;
+	margin-bottom: 1em;
+}
+
+#readme-content li {
+	margin-bottom: 0.25em;
+}
+
+#readme-content code {
+	background-color: rgba(27, 31, 35, 0.05);
+	border-radius: 3px;
+	font-size: 85%;
+	margin: 0;
+	padding: 0.2em 0.4em;
+	font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+#readme-content pre {
+	background-color: #f6f8fa;
+	border-radius: 6px;
+	font-size: 85%;
+	line-height: 1.45;
+	overflow: auto;
+	padding: 16px;
+	margin-bottom: 1em;
+}
+
+#readme-content pre code {
+	background-color: transparent;
+	border: 0;
+	display: inline;
+	line-height: inherit;
+	margin: 0;
+	overflow: visible;
+	padding: 0;
+	word-wrap: normal;
+}
+
+#readme-content blockquote {
+	border-left: 4px solid #dfe2e5;
+	color: #6a737d;
+	padding: 0 1em;
+	margin: 0 0 1em 0;
+}
+
+#readme-content table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin-bottom: 1em;
+}
+
+#readme-content table th,
+#readme-content table td {
+	border: 1px solid #dfe2e5;
+	padding: 6px 13px;
+}
+
+#readme-content table th {
+	font-weight: 600;
+	background-color: #f6f8fa;
+}
+
+#readme-content table tr {
+	background-color: transparent;
+	border-top: 1px solid #c6cbd1;
+}
+
+#readme-content table tr:nth-child(2n) {
+	background-color: #f6f8fa;
+}
+
+#readme-content img {
+	max-width: 100%;
+	box-sizing: content-box;
+}
+
+#readme-content a {
+	color: #0366d6;
+	text-decoration: none;
+}
+
+#readme-content a:hover {
+	text-decoration: underline;
+}
+
+#readme-content hr {
+	height: 0.25em;
+	padding: 0;
+	margin: 24px 0;
+	background-color: #e1e4e8;
+	border: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+	#readme-content h1,
+	#readme-content h2 {
+		border-bottom-color: #222e3b;
+	}
+
+	#readme-content h6 {
+		color: #8b949e;
+	}
+
+	#readme-content code {
+		background-color: rgba(110, 118, 129, 0.4);
+	}
+
+	#readme-content pre {
+		background-color: #161b22;
+	}
+
+	#readme-content blockquote {
+		border-left-color: #3b4854;
+		color: #8b949e;
+	}
+
+	#readme-content table th,
+	#readme-content table td {
+		border-color: #3b4854;
+	}
+
+	#readme-content table th {
+		background-color: #161b22;
+	}
+
+	#readme-content table tr {
+		border-top-color: #21262d;
+	}
+
+	#readme-content table tr:nth-child(2n) {
+		background-color: #0d1117;
+	}
+
+	#readme-content a {
+		color: #58a6ff;
+	}
+
+	#readme-content hr {
+		background-color: #21262d;
+	}
+}
+
 </style>
 {{- if eq .Layout "grid"}}
 <style>.wrapper { max-width: none; } main { margin-top: 1px; }</style>
@@ -1341,6 +1538,30 @@ document.onclick = onDocumentClickHandler;
 				{{- end}}
 			</div>
 			</main>
+
+			{{- /* Check if README.md exists in current directory */}}
+			{{- $hasReadme := false}}
+			{{- range .Items}}
+				{{- if and (not .IsDir) (or (eq .Name "README.md") (eq .Name "readme.md") (eq .Name "Readme.md"))}}
+					{{- $hasReadme = true}}
+				{{- end}}
+			{{- end}}
+
+			{{- if $hasReadme}}
+			<main style="margin-top: 2em;">
+				<div class="meta" style="border-bottom: none;">
+					<div style="display: flex; align-items: center; gap: 0.5em;">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+							<use xlink:href="#md"></use>
+						</svg>
+						<b>README</b>
+					</div>
+				</div>
+				<div id="readme-content" style="padding: 2em 5%; line-height: 1.6;">
+					<div style="text-align: center; color: #999;">Loading README.md...</div>
+				</div>
+			</main>
+			{{- end}}
 		</div>
 
 		<script>
@@ -1387,6 +1608,51 @@ document.onclick = onDocumentClickHandler;
 					}
 				});
 
+				// Load and render README.md if it exists
+				const readmeContent = document.getElementById('readme-content');
+				if (readmeContent) {
+					loadReadme(readmeContent);
+				}
+
+			}
+
+			function loadReadme(container) {
+				// Try different case variations of README.md
+				const readmeVariants = ['README.md', 'readme.md', 'Readme.md'];
+				
+				function tryLoadReadme(index) {
+					if (index >= readmeVariants.length) {
+						container.innerHTML = '<div style="text-align: center; color: #999;">README.md not found</div>';
+						return;
+					}
+					
+					fetch(readmeVariants[index])
+						.then(function(response) {
+							if (response.ok) {
+								return response.text();
+							} else {
+								throw new Error('Not found');
+							}
+						})
+						.then(function(text) {
+							if (window.marked) {
+								// marked.parse has built-in sanitization enabled by default
+								container.innerHTML = marked.parse(text);
+							} else {
+								// Use textContent to prevent XSS when marked.js is unavailable
+								const pre = document.createElement('pre');
+								pre.textContent = text;
+								container.innerHTML = '';
+								container.appendChild(pre);
+							}
+						})
+						.catch(function(error) {
+							// Try next variant
+							tryLoadReadme(index + 1);
+						});
+				}
+				
+				tryLoadReadme(0);
 			}
 
 			function filter() {
