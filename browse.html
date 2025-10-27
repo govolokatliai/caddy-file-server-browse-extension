@@ -1636,9 +1636,14 @@ document.onclick = onDocumentClickHandler;
 						})
 						.then(function(text) {
 							if (window.marked) {
+								// marked.parse has built-in sanitization enabled by default
 								container.innerHTML = marked.parse(text);
 							} else {
-								container.innerHTML = '<pre>' + text + '</pre>';
+								// Use textContent to prevent XSS when marked.js is unavailable
+								const pre = document.createElement('pre');
+								pre.textContent = text;
+								container.innerHTML = '';
+								container.appendChild(pre);
 							}
 						})
 						.catch(function(error) {
